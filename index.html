@@ -14,8 +14,6 @@
     </style>
 </head>
 
-// STEP 1: MAKE THE MAP
-// MapLibre creates the interactive web map inside the <div id="map"></div>.
 var map = new maplibregl.Map({
     container: 'map',
     style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
@@ -23,8 +21,7 @@ var map = new maplibregl.Map({
     zoom: 8
 });
 
-// STEP 2: CALL THE GOOGLE SHEET
-// Wait for the basemap to load before adding spreadsheet data.
+
 map.on('load', function () {
     // This URL uses Google Sheets gviz JSONP, not the CSV download.
     // JSONP loads data with a script tag, which avoids the CORS issue that blocks many CSV downloads.
@@ -34,7 +31,6 @@ map.on('load', function () {
     document.head.appendChild(sheetScript);
 });
 
-// Google calls this function after the sheet data loads.
 function handleGoogleSheetData(response) {
     // Store the column names from the first row of the Google Sheet.
     var columns = response.table.cols.map(function (column) {
@@ -69,7 +65,6 @@ function handleGoogleSheetData(response) {
         features: features
     };
 
-
     // Add the GeoJSON as a map source. Sources hold data.
     map.addSource('sheet-points', {
         type: 'geojson',
@@ -86,7 +81,6 @@ function handleGoogleSheetData(response) {
             'circle-color': 'purple'
         }
     });
-
 
     // STEP 4: CREATE MINIMAL POPUPS
     // When a point is clicked, show values from the location and description columns.
